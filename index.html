@@ -288,12 +288,12 @@
   <div class="form-grid">
     <div class="form-group">
       <label for="rateWithout">Rate per mille without Terrorism</label>
-      <input type="number" step="0.001" id="rateWithout" onchange="validateMinRates()" oninput="calculate()" />
+      <input type="number" step="0.001" id="rateWithout" onchange="validateMinRates()" oninput="calculate()" placeholder="e.g. 0.06" />
     </div>
 
     <div class="form-group">
       <label for="rateWith">Rate per mille with Terrorism</label>
-      <input type="number" step="0.001" id="rateWith" onchange="validateMinRates()" oninput="calculate()" />
+      <input type="number" step="0.001" id="rateWith" onchange="validateMinRates()" oninput="calculate()" placeholder="e.g. 0.11" />
     </div>
 
     <div class="form-group full-width">
@@ -332,12 +332,19 @@
     const rateWithoutInput = document.getElementById('rateWithout');
     const rateWithInput = document.getElementById('rateWith');
 
-    // If user enters a non-empty value lower than the minimum allowed threshold, auto-adjust to min limit
-    if (rateWithoutInput.value !== '' && parseFloat(rateWithoutInput.value) < 0.06) {
-      rateWithoutInput.value = 0.06;
+    // Only enforce minimum floor after user finishes typing (on change/blur)
+    if (rateWithoutInput.value !== '') {
+      let val = parseFloat(rateWithoutInput.value);
+      if (isNaN(val) || val < 0.06) {
+        rateWithoutInput.value = 0.06;
+      }
     }
-    if (rateWithInput.value !== '' && parseFloat(rateWithInput.value) < 0.11) {
-      rateWithInput.value = 0.11;
+    
+    if (rateWithInput.value !== '') {
+      let val = parseFloat(rateWithInput.value);
+      if (isNaN(val) || val < 0.11) {
+        rateWithInput.value = 0.11;
+      }
     }
     calculate();
   }
@@ -363,23 +370,14 @@
     document.getElementById('totalSumInsured').value = totalSumInsured.toLocaleString('en-IN');
 
     const coverType = document.getElementById('coverType').value;
-    const rateWithoutRaw = document.getElementById('rateWithout').value;
-    const rateWithRaw = document.getElementById('rateWith').value;
+    const rateWithoutVal = parseFloat(document.getElementById('rateWithout').value) || 0;
+    const rateWithVal = parseFloat(document.getElementById('rateWith').value) || 0;
 
-    let rateWithout = parseFloat(rateWithoutRaw);
-    let rateWith = parseFloat(rateWithRaw);
+    // Apply minimum rate during calculation without interrupting input typing
+    const effectiveWithout = rateWithoutVal > 0 ? Math.max(rateWithoutVal, 0.06) : 0;
+    const effectiveWith = rateWithVal > 0 ? Math.max(rateWithVal, 0.11) : 0;
 
-    // Minimum enforcement during active calculation
-    if (!isNaN(rateWithout) && rateWithout < 0.06) {
-      rateWithout = 0.06;
-      document.getElementById('rateWithout').value = 0.06;
-    }
-    if (!isNaN(rateWith) && rateWith < 0.11) {
-      rateWith = 0.11;
-      document.getElementById('rateWith').value = 0.11;
-    }
-
-    const selectedRate = coverType === 'with' ? (rateWith || 0) : (rateWithout || 0);
+    const selectedRate = coverType === 'with' ? effectiveWith : effectiveWithout;
 
     // Calculation & Rounding
     const rawPremium = (totalSumInsured * selectedRate / 1000) * policyPeriod;
@@ -387,13 +385,12 @@
     const gst = Math.round(premium * 0.18);
     const total = premium + gst;
 
-    // Display formatted rounded numbers
+    // Display formatted rounded values
     document.getElementById('basePremium').innerText = '₹ ' + premium.toLocaleString('en-IN');
     document.getElementById('gstAmount').innerText = '₹ ' + gst.toLocaleString('en-IN');
     document.getElementById('totalPremium').innerText = '₹ ' + total.toLocaleString('en-IN');
   }
 
-  // Initial calculation check
   calculate();
 </script>
 
