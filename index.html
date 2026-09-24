@@ -118,6 +118,11 @@
       color: #475569;
     }
 
+    .dark-label {
+      color: #0f172a;
+      font-weight: 700;
+    }
+
     input, select {
       padding: 10px;
       border: 1px solid var(--border);
@@ -133,6 +138,16 @@
     .read-only {
       background-color: #f1f5f9;
       font-weight: bold;
+    }
+
+    .converter-group {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .converter-group input {
+      width: 50%;
     }
 
     .premium-box {
@@ -278,9 +293,17 @@
       <input type="number" id="contentsVal" value="0" min="0" oninput="calculate()" />
     </div>
 
-    <div class="form-group full-width">
-      <label for="totalSumInsured">Total Sum Insured (₹)</label>
+    <div class="form-group">
+      <label for="totalSumInsured" class="dark-label">Total Sum Insured (₹)</label>
       <input type="text" id="totalSumInsured" class="read-only" readonly value="0" />
+    </div>
+
+    <div class="form-group">
+      <label for="sqFtInput">Square Foot to Square Metre</label>
+      <div class="converter-group">
+        <input type="number" id="sqFtInput" placeholder="Sq. Ft." min="0" oninput="convertSqFtToSqM()" />
+        <input type="text" id="sqMOutput" class="read-only" readonly placeholder="Sq. Metre" />
+      </div>
     </div>
   </div>
 
@@ -347,6 +370,20 @@
       }
     }
     calculate();
+  }
+
+  function convertSqFtToSqM() {
+    const sqFt = parseFloat(document.getElementById('sqFtInput').value);
+    const sqMOutput = document.getElementById('sqMOutput');
+
+    if (isNaN(sqFt) || sqFt < 0) {
+      sqMOutput.value = '';
+      return;
+    }
+
+    // 1 Sq Ft = 0.09290304 Sq Metre
+    const sqM = sqFt * 0.09290304;
+    sqMOutput.value = sqM.toFixed(4);
   }
 
   function calculate() {
