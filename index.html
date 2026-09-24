@@ -129,6 +129,8 @@
       border-radius: 4px;
       font-size: 0.95rem;
       outline: none;
+      width: 100%;
+      box-sizing: border-box;
     }
 
     input:focus, select:focus {
@@ -148,6 +150,60 @@
 
     .converter-group input {
       width: 50%;
+    }
+
+    /* Estimator Table Styles */
+    .estimator-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
+    .estimator-table th, .estimator-table td {
+      border: 1px solid var(--border);
+      padding: 6px 8px;
+      text-align: left;
+    }
+
+    .estimator-table th {
+      background-color: #f1f5f9;
+      color: var(--primary);
+      font-size: 0.9rem;
+      text-align: center;
+    }
+
+    .estimator-table td:first-child {
+      text-align: center;
+      font-weight: bold;
+      background-color: #f1f5f9;
+      width: 40px;
+    }
+
+    .estimator-table input {
+      padding: 8px;
+      border: 1px solid transparent;
+      border-radius: 2px;
+      font-size: 0.95rem;
+    }
+    
+    .estimator-table input:focus {
+      border: 1px solid var(--accent);
+    }
+
+    .estimator-table input.read-only {
+      border-color: transparent;
+      text-align: right;
+    }
+
+    .estimator-table tfoot td {
+      font-weight: bold;
+      background-color: #f1f5f9;
+    }
+
+    .estimator-table tfoot td:first-child {
+      text-align: right;
+      padding-right: 15px;
     }
 
     .premium-box {
@@ -225,8 +281,15 @@
         background: transparent;
         padding: 4px 0;
       }
+      .estimator-table th, .estimator-table td {
+        border: 1px solid #000;
+      }
+      .estimator-table input {
+        border: none !important;
+        background: transparent;
+      }
       .read-only {
-        background-color: transparent;
+        background-color: transparent !important;
       }
     }
   </style>
@@ -307,6 +370,56 @@
     </div>
   </div>
 
+  <!-- INDEPENDENT SUM INSURED ESTIMATOR -->
+  <div class="section-title">Construction Sum Insured Estimator</div>
+  <table class="estimator-table">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Description</th>
+        <th>Rate of Construction</th>
+        <th>Square Metre</th>
+        <th>Sum Insured</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td><input type="text" placeholder="Description 1" /></td>
+        <td><input type="number" id="estRate1" min="0" oninput="calculateEstimator()" placeholder="Rate" /></td>
+        <td><input type="number" id="estSqm1" min="0" oninput="calculateEstimator()" placeholder="Sq Mtr" /></td>
+        <td><input type="text" id="estSi1" class="read-only" readonly placeholder="₹ 0" /></td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td><input type="text" placeholder="Description 2" /></td>
+        <td><input type="number" id="estRate2" min="0" oninput="calculateEstimator()" placeholder="Rate" /></td>
+        <td><input type="number" id="estSqm2" min="0" oninput="calculateEstimator()" placeholder="Sq Mtr" /></td>
+        <td><input type="text" id="estSi2" class="read-only" readonly placeholder="₹ 0" /></td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td><input type="text" placeholder="Description 3" /></td>
+        <td><input type="number" id="estRate3" min="0" oninput="calculateEstimator()" placeholder="Rate" /></td>
+        <td><input type="number" id="estSqm3" min="0" oninput="calculateEstimator()" placeholder="Sq Mtr" /></td>
+        <td><input type="text" id="estSi3" class="read-only" readonly placeholder="₹ 0" /></td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td><input type="text" placeholder="Description 4" /></td>
+        <td><input type="number" id="estRate4" min="0" oninput="calculateEstimator()" placeholder="Rate" /></td>
+        <td><input type="number" id="estSqm4" min="0" oninput="calculateEstimator()" placeholder="Sq Mtr" /></td>
+        <td><input type="text" id="estSi4" class="read-only" readonly placeholder="₹ 0" /></td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="4">Total Sum Insured</td>
+        <td><input type="text" id="estTotalSi" class="read-only" readonly placeholder="₹ 0" /></td>
+      </tr>
+    </tfoot>
+  </table>
+
   <div class="section-title">Rating Details</div>
   <div class="form-grid">
     <div class="form-group">
@@ -351,6 +464,31 @@
 </div>
 
 <script>
+  // Evaluates independent construction estimator
+  function calculateEstimator() {
+    let grandTotal = 0;
+    
+    for (let i = 1; i <= 4; i++) {
+      const rate = parseFloat(document.getElementById(`estRate${i}`).value) || 0;
+      const sqm = parseFloat(document.getElementById(`estSqm${i}`).value) || 0;
+      
+      const rowSum = Math.round(rate * sqm); // Sum insured is typically rounded
+      
+      if (rowSum > 0) {
+        document.getElementById(`estSi${i}`).value = '₹ ' + rowSum.toLocaleString('en-IN');
+        grandTotal += rowSum;
+      } else {
+        document.getElementById(`estSi${i}`).value = '';
+      }
+    }
+    
+    if (grandTotal > 0) {
+      document.getElementById('estTotalSi').value = '₹ ' + grandTotal.toLocaleString('en-IN');
+    } else {
+      document.getElementById('estTotalSi').value = '';
+    }
+  }
+
   function validateMinRates() {
     const rateWithoutInput = document.getElementById('rateWithout');
     const rateWithInput = document.getElementById('rateWith');
