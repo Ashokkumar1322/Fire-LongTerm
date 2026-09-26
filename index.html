@@ -168,17 +168,19 @@
       text-align: center;
     }
 
-    /* Column Sizing */
-    .col-num { width: 30px; text-align: center; font-weight: bold; background-color: #f1f5f9; }
-    .col-prop { width: 120px; font-weight: 600; background-color: #f8fafc; font-size: 0.9rem; }
-    .col-desc { width: auto; }
-    .col-rate { width: 125px; }
-    .col-sqm { width: 105px; }
-    .col-si { width: 130px; }
+    /* Adjusted Column Widths */
+    .col-num { width: 25px; text-align: center; font-weight: bold; background-color: #f1f5f9; }
+    .col-prop { width: 105px; font-weight: 700; color: #0f172a; background-color: #f8fafc; font-size: 0.9rem; }
+    .col-desc { width: auto; } /* Automatically expands with freed space */
+    .col-rate { width: 105px; }
+    .col-sqm { width: 85px; }
+    .col-si { width: 115px; }
 
     .estimator-table td.col-prop {
       text-align: left;
-      padding-left: 10px;
+      padding-left: 8px;
+      color: #0f172a;
+      font-weight: 700;
     }
 
     .estimator-table input {
