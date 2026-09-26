@@ -168,7 +168,7 @@
       text-align: center;
     }
 
-    /* Reduced widths for specific columns */
+    /* Column Sizing */
     .col-num { width: 30px; text-align: center; font-weight: bold; background-color: #f1f5f9; }
     .col-prop { width: 120px; font-weight: 600; background-color: #f8fafc; font-size: 0.9rem; }
     .col-desc { width: auto; }
@@ -192,9 +192,15 @@
       border: 1px solid var(--accent);
     }
 
+    /* Right-aligned and dark text specifically for the Sum Insured column */
+    .estimator-table .col-si input {
+      text-align: right;
+      font-weight: bold;
+      color: var(--text);
+    }
+
     .estimator-table input.read-only {
       border-color: transparent;
-      text-align: right;
     }
 
     .estimator-table input.na-field {
@@ -267,9 +273,7 @@
 
     /* --- PRINT STYLES OPTIMIZED FOR SINGLE PAGE --- */
     @media print {
-      @page {
-        margin: 10mm;
-      }
+      @page { margin: 10mm; }
       body {
         background-color: white;
         padding: 0;
@@ -284,10 +288,7 @@
         padding: 0;
         margin: 0;
       }
-      .header, .notes-box, .actions {
-        display: none !important;
-      }
-
+      .header, .notes-box, .actions { display: none !important; }
       .company-title {
         font-size: 12pt;
         margin-bottom: 10px;
@@ -303,9 +304,7 @@
         gap: 6px 15px;
         margin-bottom: 10px !important;
       }
-      .form-group {
-        page-break-inside: avoid;
-      }
+      .form-group { page-break-inside: avoid; }
       label {
         font-size: 9pt;
         margin-bottom: 2px;
@@ -336,13 +335,13 @@
         padding: 0;
         font-size: 9pt;
       }
-      .estimator-table input.read-only {
+      
+      /* Maintain right alignment on print */
+      .estimator-table .col-si input {
         text-align: right;
       }
       
-      .read-only {
-        background-color: transparent !important;
-      }
+      .read-only { background-color: transparent !important; }
 
       .premium-box {
         margin-top: 10px;
@@ -469,7 +468,7 @@
         <td class="col-desc"><input type="text" placeholder="Description 3" /></td>
         <td class="col-rate"><input type="text" value="NA" class="read-only na-field" readonly /></td>
         <td class="col-sqm"><input type="text" value="NA" class="read-only na-field" readonly /></td>
-        <td class="col-si"><input type="number" id="estDirectSi3" min="0" oninput="calculateEstimator()" placeholder="Sum Insured" /></td>
+        <td class="col-si"><input type="text" inputmode="numeric" id="estDirectSi3" onfocus="unformatCurrency(this)" onblur="formatCurrency(this)" oninput="calculateEstimator()" placeholder="₹ 0" /></td>
       </tr>
       <tr>
         <td class="col-num">4</td>
@@ -477,7 +476,7 @@
         <td class="col-desc"><input type="text" placeholder="Description 4" /></td>
         <td class="col-rate"><input type="text" value="NA" class="read-only na-field" readonly /></td>
         <td class="col-sqm"><input type="text" value="NA" class="read-only na-field" readonly /></td>
-        <td class="col-si"><input type="number" id="estDirectSi4" min="0" oninput="calculateEstimator()" placeholder="Sum Insured" /></td>
+        <td class="col-si"><input type="text" inputmode="numeric" id="estDirectSi4" onfocus="unformatCurrency(this)" onblur="formatCurrency(this)" oninput="calculateEstimator()" placeholder="₹ 0" /></td>
       </tr>
       <tr>
         <td class="col-num">5</td>
@@ -485,7 +484,7 @@
         <td class="col-desc"><input type="text" placeholder="Description 5" /></td>
         <td class="col-rate"><input type="text" value="NA" class="read-only na-field" readonly /></td>
         <td class="col-sqm"><input type="text" value="NA" class="read-only na-field" readonly /></td>
-        <td class="col-si"><input type="number" id="estDirectSi5" min="0" oninput="calculateEstimator()" placeholder="Sum Insured" /></td>
+        <td class="col-si"><input type="text" inputmode="numeric" id="estDirectSi5" onfocus="unformatCurrency(this)" onblur="formatCurrency(this)" oninput="calculateEstimator()" placeholder="₹ 0" /></td>
       </tr>
       <tr>
         <td class="col-num">6</td>
@@ -493,13 +492,13 @@
         <td class="col-desc"><input type="text" placeholder="Description 6" /></td>
         <td class="col-rate"><input type="text" value="NA" class="read-only na-field" readonly /></td>
         <td class="col-sqm"><input type="text" value="NA" class="read-only na-field" readonly /></td>
-        <td class="col-si"><input type="number" id="estDirectSi6" min="0" oninput="calculateEstimator()" placeholder="Sum Insured" /></td>
+        <td class="col-si"><input type="text" inputmode="numeric" id="estDirectSi6" onfocus="unformatCurrency(this)" onblur="formatCurrency(this)" oninput="calculateEstimator()" placeholder="₹ 0" /></td>
       </tr>
     </tbody>
     <tfoot>
       <tr>
         <td colspan="5" class="total-label">TOTAL SUM INSURED</td>
-        <td><input type="text" id="estTotalSi" class="read-only" readonly placeholder="₹ 0" /></td>
+        <td class="col-si"><input type="text" id="estTotalSi" class="read-only" readonly placeholder="₹ 0" /></td>
       </tr>
     </tfoot>
   </table>
@@ -548,7 +547,28 @@
 </div>
 
 <script>
-  // Evaluates Property & Sum Insured Break-Up
+  // --- Formatting Functions ---
+  function formatCurrency(el) {
+    // Strip everything except numbers and decimals
+    let val = parseFloat(el.value.replace(/[^\d.-]/g, ''));
+    if (!isNaN(val) && val > 0) {
+      el.value = '₹ ' + val.toLocaleString('en-IN');
+    } else {
+      el.value = '';
+    }
+  }
+
+  function unformatCurrency(el) {
+    // Reveal raw number for editing
+    let val = parseFloat(el.value.replace(/[^\d.-]/g, ''));
+    if (!isNaN(val) && val > 0) {
+      el.value = val;
+    } else {
+      el.value = '';
+    }
+  }
+
+  // --- Core Calculation ---
   function calculateEstimator() {
     let grandTotal = 0;
     
@@ -567,9 +587,10 @@
       }
     }
 
-    // Rows 3 to 6: Contents & Addl Structures (Direct Input)
+    // Rows 3 to 6: Contents & Addl Structures (Direct Input parsed securely)
     for (let i = 3; i <= 6; i++) {
-      const directSi = parseFloat(document.getElementById(`estDirectSi${i}`).value) || 0;
+      const rawInput = document.getElementById(`estDirectSi${i}`).value;
+      const directSi = parseFloat(rawInput.replace(/[^\d.-]/g, '')) || 0;
       if (directSi > 0) {
         grandTotal += directSi;
       }
@@ -632,7 +653,7 @@
       document.getElementById('policyPeriod').value = maxAllowedPeriod;
     }
 
-    // Sum Insured from the estimator table total
+    // Accumulate total Sum Insured from estimator table
     let totalSumInsured = 0;
     for (let i = 1; i <= 2; i++) {
       const rate = parseFloat(document.getElementById(`estRate${i}`).value) || 0;
@@ -640,7 +661,8 @@
       totalSumInsured += Math.round(rate * sqm);
     }
     for (let i = 3; i <= 6; i++) {
-      totalSumInsured += parseFloat(document.getElementById(`estDirectSi${i}`).value) || 0;
+      const rawInput = document.getElementById(`estDirectSi${i}`).value;
+      totalSumInsured += parseFloat(rawInput.replace(/[^\d.-]/g, '')) || 0;
     }
 
     const coverType = document.getElementById('coverType').value;
@@ -664,6 +686,7 @@
     document.getElementById('totalPremium').innerText = '₹ ' + total.toLocaleString('en-IN');
   }
 
+  // Initial call to ensure table aligns properly
   calculate();
 </script>
 
