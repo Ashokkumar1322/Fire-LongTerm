@@ -168,7 +168,7 @@
       text-align: center;
     }
 
-    /* Adjusted Column Widths */
+    /* Column Sizing */
     .col-num { width: 25px; text-align: center; font-weight: bold; background-color: #f1f5f9; }
     .col-prop { width: 105px; font-weight: 700; color: #0f172a; background-color: #f8fafc; font-size: 0.9rem; }
     .col-desc { width: auto; }
@@ -279,15 +279,30 @@
       background-color: #1d4ed8;
     }
 
-    /* --- PRINT STYLES OPTIMIZED FOR SINGLE PAGE --- */
+    /* Printable Quotation Sheet - Hidden on Web View */
+    .printable-quotation {
+      display: none;
+    }
+
+    /* --- PRINT STYLES OPTIMIZED FOR FORMAL LETTER QUOTATION --- */
     @media print {
-      @page { margin: 10mm; }
+      @page { 
+        margin: 12mm 15mm; 
+      }
       body {
         background-color: white;
         padding: 0;
         margin: 0;
-        font-size: 10pt;
+        font-family: 'Times New Roman', Times, serif, 'Segoe UI', sans-serif;
+        font-size: 11pt;
+        color: #000;
       }
+      
+      /* Hide Interactive Web Calculator Elements */
+      .calculator-web-view, .header, .notes-box, .actions, .company-title {
+        display: none !important;
+      }
+
       .container {
         box-shadow: none;
         border: none;
@@ -296,89 +311,127 @@
         padding: 0;
         margin: 0;
       }
-      .header, .notes-box, .actions { display: none !important; }
-      .company-title {
-        font-size: 12pt;
-        margin-bottom: 10px;
-        padding-bottom: 2px;
-      }
-      .section-title {
-        font-size: 10pt;
-        margin: 10px 0 5px 0;
-        padding-bottom: 2px;
-        page-break-after: avoid;
-      }
-      .form-grid {
-        gap: 6px 15px;
-        margin-bottom: 10px !important;
-      }
-      .form-group { page-break-inside: avoid; }
-      label {
-        font-size: 9pt;
-        margin-bottom: 2px;
-      }
-      input, select {
-        border: none;
-        border-bottom: 1px solid #000;
-        border-radius: 0;
-        background: transparent;
-        padding: 2px 0;
-        font-size: 10pt;
-        height: auto;
+
+      /* Show Formal Quotation Container */
+      .printable-quotation {
+        display: block !important;
       }
 
-      .estimator-table {
+      .quote-header-title {
+        text-align: center;
+        font-size: 14pt;
+        font-weight: bold;
+        text-transform: uppercase;
+        margin-bottom: 3px;
+      }
+
+      .quote-subtitle {
+        text-align: center;
+        font-size: 12pt;
+        font-weight: bold;
+        text-transform: uppercase;
+        margin-bottom: 3px;
+      }
+
+      .quote-category {
+        text-align: center;
+        font-size: 10pt;
+        font-weight: bold;
+        text-transform: uppercase;
+        margin-bottom: 15px;
+        padding-bottom: 5px;
+        border-bottom: 2px solid #000;
+      }
+
+      .quote-meta-table {
+        width: 100%;
+        margin-bottom: 15px;
+        border-collapse: collapse;
+      }
+
+      .quote-meta-table td {
+        padding: 3px 0;
+        vertical-align: top;
+        font-size: 10.5pt;
+      }
+
+      .quote-letter-body p {
+        margin: 6px 0;
+        line-height: 1.4;
+        font-size: 10.5pt;
+        text-align: justify;
+      }
+
+      .quote-table-title {
+        font-weight: bold;
+        font-size: 11pt;
+        margin: 12px 0 6px 0;
+        text-transform: uppercase;
+      }
+
+      /* Printed Estimator Table styling */
+      .printable-quotation .estimator-table {
         margin-top: 5px;
-        margin-bottom: 5px;
-        page-break-inside: avoid;
-      }
-      .estimator-table th, .estimator-table td {
-        border: 1px solid #000;
-        padding: 4px;
-        font-size: 9pt;
-      }
-      .estimator-table input {
-        border: none !important;
-        background: transparent;
-        padding: 0;
-        font-size: 9pt;
+        margin-bottom: 12px;
+        width: 100%;
+        border-collapse: collapse;
       }
       
-      .estimator-table .col-rate input,
-      .estimator-table .col-sqm input {
+      .printable-quotation .estimator-table th, 
+      .printable-quotation .estimator-table td {
+        border: 1px solid #000 !important;
+        padding: 5px 6px;
+        font-size: 10pt;
+      }
+
+      .printable-quotation .estimator-table th {
+        background-color: #f2f2f2 !important;
+        font-weight: bold;
+      }
+
+      .printable-quotation .estimator-table .col-rate,
+      .printable-quotation .estimator-table .col-sqm {
         text-align: center;
       }
 
-      .estimator-table .col-si input {
+      .printable-quotation .estimator-table .col-si {
         text-align: right;
+        font-weight: bold;
       }
-      
-      .read-only { background-color: transparent !important; }
 
-      .premium-box {
+      .quote-summary-box {
         margin-top: 10px;
-        padding: 10px 15px;
+        margin-bottom: 15px;
         border: 1px solid #000;
-        border-radius: 4px;
-        background-color: transparent;
+        padding: 8px 12px;
+        background-color: #fafafa;
+      }
+
+      .quote-summary-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 3px 0;
+        font-size: 10.5pt;
+      }
+
+      .quote-summary-row.total {
+        font-weight: bold;
+        border-top: 1px solid #000;
+        padding-top: 5px;
+        margin-top: 3px;
+        font-size: 11.5pt;
+      }
+
+      .quote-closing {
+        margin-top: 15px;
+        font-size: 10.5pt;
+        line-height: 1.4;
+      }
+
+      .quote-signature {
+        margin-top: 30px;
+        font-size: 10.5pt;
         page-break-inside: avoid;
-      }
-      .premium-box h3 {
-        font-size: 11pt;
-        margin: 0 0 8px 0;
-        color: #000;
-      }
-      .premium-row {
-        padding: 4px 0;
-        font-size: 10pt;
-        border-bottom: 1px dashed #000;
-        page-break-inside: avoid;
-      }
-      .premium-row.total {
-        padding-top: 8px;
-        font-size: 11pt;
-        border-bottom: none;
-        color: #000;
       }
     }
   </style>
@@ -401,164 +454,225 @@
     </ul>
   </div>
 
-  <!-- Printable Area Starts Here -->
-  <div class="company-title">THE NEW INDIA ASSURANCE CO LTD</div>
+  <!-- Interactive Web View Container -->
+  <div class="calculator-web-view">
+    <div class="company-title">THE NEW INDIA ASSURANCE CO LTD</div>
 
-  <div class="form-grid" style="margin-bottom: 20px;">
-    <div class="form-group">
-      <label for="businessOffice">BUSINESS OFFICE :</label>
-      <input type="text" id="businessOffice" placeholder="Enter Business Office" />
-    </div>
-    <div class="form-group">
-      <label for="customerName">CUSTOMER'S NAME :</label>
-      <input type="text" id="customerName" placeholder="Enter Customer's Name" />
-    </div>
-    <div class="form-group">
-      <label for="businessOfficeContact">BUSINESS OFFICE CONTACT :</label>
-      <input type="text" id="businessOfficeContact" placeholder="Enter Business Office Contact" />
-    </div>
-  </div>
-
-  <div class="section-title">Building & Risk Details</div>
-  <div class="form-grid">
-    <div class="form-group full-width">
-      <label for="dwellingType">Type of Ownership</label>
-      <select id="dwellingType" onchange="calculate()">
-        <option value="individual">Individual Dwellings (Max Age: 40 Yrs)</option>
-        <option value="society">Co-op Society / Welfare Asscn / Corporate (Max Age: 5 Yrs)</option>
-      </select>
+    <div class="form-grid" style="margin-bottom: 20px;">
+      <div class="form-group">
+        <label for="businessOffice">BUSINESS OFFICE :</label>
+        <input type="text" id="businessOffice" placeholder="Enter Business Office" />
+      </div>
+      <div class="form-group">
+        <label for="customerName">CUSTOMER'S NAME :</label>
+        <input type="text" id="customerName" placeholder="Enter Customer's Name" />
+      </div>
+      <div class="form-group">
+        <label for="businessOfficeContact">BUSINESS OFFICE CONTACT :</label>
+        <input type="text" id="businessOfficeContact" placeholder="Enter Business Office Contact" />
+      </div>
     </div>
 
-    <div class="form-group">
-      <label for="buildingAge">Age of Building (Years)</label>
-      <input type="number" id="buildingAge" value="0" min="0" oninput="calculate()" />
+    <div class="section-title">Building & Risk Details</div>
+    <div class="form-grid">
+      <div class="form-group full-width">
+        <label for="dwellingType">Type of Ownership</label>
+        <select id="dwellingType" onchange="calculate()">
+          <option value="individual">Individual Dwellings (Max Age: 40 Yrs)</option>
+          <option value="society">Co-op Society / Welfare Asscn / Corporate (Max Age: 5 Yrs)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="buildingAge">Age of Building (Years)</label>
+        <input type="number" id="buildingAge" value="0" min="0" oninput="calculate()" />
+      </div>
+
+      <div class="form-group">
+        <label for="policyPeriod">Period of Insurance (Years)</label>
+        <input type="number" id="policyPeriod" value="1" min="1" oninput="calculate()" />
+      </div>
+
+      <div class="form-group full-width">
+        <label for="sqFtInput">Square Foot to Square Metre Calculator</label>
+        <div class="converter-group">
+          <input type="number" id="sqFtInput" placeholder="Sq. Ft." min="0" oninput="convertSqFtToSqM()" />
+          <input type="text" id="sqMOutput" class="read-only" readonly placeholder="Sq. Metre" />
+        </div>
+      </div>
     </div>
 
-    <div class="form-group">
-      <label for="policyPeriod">Period of Insurance (Years)</label>
-      <input type="number" id="policyPeriod" value="1" min="1" oninput="calculate()" />
+    <!-- PROPERTY AND SUM INSURED BREAK-UP TABLE -->
+    <div class="section-title">Property and Sum Insured Break-up</div>
+    <table class="estimator-table" id="webEstimatorTable">
+      <thead>
+        <tr>
+          <th class="col-num"></th>
+          <th class="col-prop">Property</th>
+          <th class="col-desc">Description</th>
+          <th class="col-rate">Rate of Construction</th>
+          <th class="col-sqm">Square Metre</th>
+          <th class="col-si">Sum Insured</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="col-num">1</td>
+          <td class="col-prop">Building</td>
+          <td class="col-desc"><input type="text" id="desc1" placeholder="Description 1" /></td>
+          <td class="col-rate"><input type="number" id="estRate1" min="0" oninput="calculateEstimator()" placeholder="Rate" /></td>
+          <td class="col-sqm"><input type="number" id="estSqm1" min="0" oninput="calculateEstimator()" placeholder="Sq Mtr" /></td>
+          <td class="col-si"><input type="text" id="estSi1" class="read-only" readonly placeholder="₹ 0" /></td>
+        </tr>
+        <tr>
+          <td class="col-num">2</td>
+          <td class="col-prop">Building</td>
+          <td class="col-desc"><input type="text" id="desc2" placeholder="Description 2" /></td>
+          <td class="col-rate"><input type="number" id="estRate2" min="0" oninput="calculateEstimator()" placeholder="Rate" /></td>
+          <td class="col-sqm"><input type="number" id="estSqm2" min="0" oninput="calculateEstimator()" placeholder="Sq Mtr" /></td>
+          <td class="col-si"><input type="text" id="estSi2" class="read-only" readonly placeholder="₹ 0" /></td>
+        </tr>
+        <tr>
+          <td class="col-num">3</td>
+          <td class="col-prop">Contents</td>
+          <td class="col-desc"><input type="text" id="desc3" placeholder="Description 3" /></td>
+          <td class="col-rate"><input type="text" value="NA" class="read-only na-field" readonly /></td>
+          <td class="col-sqm"><input type="text" value="NA" class="read-only na-field" readonly /></td>
+          <td class="col-si"><input type="text" inputmode="numeric" id="estDirectSi3" onfocus="unformatCurrency(this)" onblur="formatCurrency(this)" oninput="calculateEstimator()" placeholder="₹ 0" /></td>
+        </tr>
+        <tr>
+          <td class="col-num">4</td>
+          <td class="col-prop">Contents</td>
+          <td class="col-desc"><input type="text" id="desc4" placeholder="Description 4" /></td>
+          <td class="col-rate"><input type="text" value="NA" class="read-only na-field" readonly /></td>
+          <td class="col-sqm"><input type="text" value="NA" class="read-only na-field" readonly /></td>
+          <td class="col-si"><input type="text" inputmode="numeric" id="estDirectSi4" onfocus="unformatCurrency(this)" onblur="formatCurrency(this)" oninput="calculateEstimator()" placeholder="₹ 0" /></td>
+        </tr>
+        <tr>
+          <td class="col-num">5</td>
+          <td class="col-prop">Addl Structures</td>
+          <td class="col-desc"><input type="text" id="desc5" placeholder="Description 5" /></td>
+          <td class="col-rate"><input type="text" value="NA" class="read-only na-field" readonly /></td>
+          <td class="col-sqm"><input type="text" value="NA" class="read-only na-field" readonly /></td>
+          <td class="col-si"><input type="text" inputmode="numeric" id="estDirectSi5" onfocus="unformatCurrency(this)" onblur="formatCurrency(this)" oninput="calculateEstimator()" placeholder="₹ 0" /></td>
+        </tr>
+        <tr>
+          <td class="col-num">6</td>
+          <td class="col-prop">Addl Structures</td>
+          <td class="col-desc"><input type="text" id="desc6" placeholder="Description 6" /></td>
+          <td class="col-rate"><input type="text" value="NA" class="read-only na-field" readonly /></td>
+          <td class="col-sqm"><input type="text" value="NA" class="read-only na-field" readonly /></td>
+          <td class="col-si"><input type="text" inputmode="numeric" id="estDirectSi6" onfocus="unformatCurrency(this)" onblur="formatCurrency(this)" oninput="calculateEstimator()" placeholder="₹ 0" /></td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="5" class="total-label">TOTAL SUM INSURED</td>
+          <td class="col-si"><input type="text" id="estTotalSi" class="read-only" readonly placeholder="₹ 0" /></td>
+        </tr>
+      </tfoot>
+    </table>
+
+    <div class="section-title">Rating Details</div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="rateWithout">Rate per mille without Terrorism</label>
+        <input type="number" step="0.001" id="rateWithout" onchange="validateMinRates()" oninput="calculate()" placeholder="e.g. 0.06" />
+      </div>
+
+      <div class="form-group">
+        <label for="rateWith">Rate per mille with Terrorism</label>
+        <input type="number" step="0.001" id="rateWith" onchange="validateMinRates()" oninput="calculate()" placeholder="e.g. 0.11" />
+      </div>
+
+      <div class="form-group full-width">
+        <label for="coverType">Apply Rate Type</label>
+        <select id="coverType" onchange="calculate()">
+          <option value="without">Without Terrorism Rate</option>
+          <option value="with">With Terrorism Rate</option>
+        </select>
+      </div>
     </div>
 
-    <div class="form-group full-width">
-      <label for="sqFtInput">Square Foot to Square Metre Calculator</label>
-      <div class="converter-group">
-        <input type="number" id="sqFtInput" placeholder="Sq. Ft." min="0" oninput="convertSqFtToSqM()" />
-        <input type="text" id="sqMOutput" class="read-only" readonly placeholder="Sq. Metre" />
+    <div class="premium-box">
+      <h3>Premium Working</h3>
+      <div class="premium-row">
+        <span>1) Premium :</span>
+        <span id="basePremium">₹ 0</span>
+      </div>
+      <div class="premium-row">
+        <span>2) GST 18% :</span>
+        <span id="gstAmount">₹ 0</span>
+      </div>
+      <div class="premium-row total">
+        <span>TOTAL :</span>
+        <span id="totalPremium">₹ 0</span>
       </div>
     </div>
   </div>
 
-  <!-- PROPERTY AND SUM INSURED BREAK-UP TABLE -->
-  <div class="section-title">Property and Sum Insured Break-up</div>
-  <table class="estimator-table">
-    <thead>
-      <tr>
-        <th class="col-num"></th>
-        <th class="col-prop">Property</th>
-        <th class="col-desc">Description</th>
-        <th class="col-rate">Rate of Construction</th>
-        <th class="col-sqm">Square Metre</th>
-        <th class="col-si">Sum Insured</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td class="col-num">1</td>
-        <td class="col-prop">Building</td>
-        <td class="col-desc"><input type="text" placeholder="Description 1" /></td>
-        <td class="col-rate"><input type="number" id="estRate1" min="0" oninput="calculateEstimator()" placeholder="Rate" /></td>
-        <td class="col-sqm"><input type="number" id="estSqm1" min="0" oninput="calculateEstimator()" placeholder="Sq Mtr" /></td>
-        <td class="col-si"><input type="text" id="estSi1" class="read-only" readonly placeholder="₹ 0" /></td>
-      </tr>
-      <tr>
-        <td class="col-num">2</td>
-        <td class="col-prop">Building</td>
-        <td class="col-desc"><input type="text" placeholder="Description 2" /></td>
-        <td class="col-rate"><input type="number" id="estRate2" min="0" oninput="calculateEstimator()" placeholder="Rate" /></td>
-        <td class="col-sqm"><input type="number" id="estSqm2" min="0" oninput="calculateEstimator()" placeholder="Sq Mtr" /></td>
-        <td class="col-si"><input type="text" id="estSi2" class="read-only" readonly placeholder="₹ 0" /></td>
-      </tr>
-      <tr>
-        <td class="col-num">3</td>
-        <td class="col-prop">Contents</td>
-        <td class="col-desc"><input type="text" placeholder="Description 3" /></td>
-        <td class="col-rate"><input type="text" value="NA" class="read-only na-field" readonly /></td>
-        <td class="col-sqm"><input type="text" value="NA" class="read-only na-field" readonly /></td>
-        <td class="col-si"><input type="text" inputmode="numeric" id="estDirectSi3" onfocus="unformatCurrency(this)" onblur="formatCurrency(this)" oninput="calculateEstimator()" placeholder="₹ 0" /></td>
-      </tr>
-      <tr>
-        <td class="col-num">4</td>
-        <td class="col-prop">Contents</td>
-        <td class="col-desc"><input type="text" placeholder="Description 4" /></td>
-        <td class="col-rate"><input type="text" value="NA" class="read-only na-field" readonly /></td>
-        <td class="col-sqm"><input type="text" value="NA" class="read-only na-field" readonly /></td>
-        <td class="col-si"><input type="text" inputmode="numeric" id="estDirectSi4" onfocus="unformatCurrency(this)" onblur="formatCurrency(this)" oninput="calculateEstimator()" placeholder="₹ 0" /></td>
-      </tr>
-      <tr>
-        <td class="col-num">5</td>
-        <td class="col-prop">Addl Structures</td>
-        <td class="col-desc"><input type="text" placeholder="Description 5" /></td>
-        <td class="col-rate"><input type="text" value="NA" class="read-only na-field" readonly /></td>
-        <td class="col-sqm"><input type="text" value="NA" class="read-only na-field" readonly /></td>
-        <td class="col-si"><input type="text" inputmode="numeric" id="estDirectSi5" onfocus="unformatCurrency(this)" onblur="formatCurrency(this)" oninput="calculateEstimator()" placeholder="₹ 0" /></td>
-      </tr>
-      <tr>
-        <td class="col-num">6</td>
-        <td class="col-prop">Addl Structures</td>
-        <td class="col-desc"><input type="text" placeholder="Description 6" /></td>
-        <td class="col-rate"><input type="text" value="NA" class="read-only na-field" readonly /></td>
-        <td class="col-sqm"><input type="text" value="NA" class="read-only na-field" readonly /></td>
-        <td class="col-si"><input type="text" inputmode="numeric" id="estDirectSi6" onfocus="unformatCurrency(this)" onblur="formatCurrency(this)" oninput="calculateEstimator()" placeholder="₹ 0" /></td>
-      </tr>
-    </tbody>
-    <tfoot>
-      <tr>
-        <td colspan="5" class="total-label">TOTAL SUM INSURED</td>
-        <td class="col-si"><input type="text" id="estTotalSi" class="read-only" readonly placeholder="₹ 0" /></td>
-      </tr>
-    </tfoot>
-  </table>
+  <!-- FORMAL PRINTABLE QUOTATION SHEET TEMPLATE -->
+  <div class="printable-quotation">
+    <div class="quote-header-title">THE NEW INDIA ASSURANCE CO. LTD.</div>
+    <div class="quote-subtitle">PREMIUM QUOTATION</div>
+    <div class="quote-category">BUILDING OCCUPIED AS RESIDENCE ONLY</div>
 
-  <div class="section-title">Rating Details</div>
-  <div class="form-grid">
-    <div class="form-group">
-      <label for="rateWithout">Rate per mille without Terrorism</label>
-      <input type="number" step="0.001" id="rateWithout" onchange="validateMinRates()" oninput="calculate()" placeholder="e.g. 0.06" />
+    <table class="quote-meta-table">
+      <tr>
+        <td style="width: 60%;"><strong>Business Office :</strong> <span id="printBusOffice"></span></td>
+        <td style="width: 40%; text-align: right;"><strong>Date :</strong> <span id="printDate"></span></td>
+      </tr>
+      <tr>
+        <td><strong>Business Office Contact :</strong> <span id="printBusContact"></span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><strong>Customer’s Name :</strong> <span id="printCustName"></span></td>
+        <td></td>
+      </tr>
+    </table>
+
+    <div class="quote-letter-body">
+      <p>Sir/Madam,</p>
+      <p>Greetings from The New India Assurance Co. Ltd., India's Premier Multinational General Insurance Company!</p>
+      <p>We sincerely thank you for choosing us for your insurance needs. Based on the requirements you shared, we are pleased to present our customized quotation for your perusal. The details of your proposed coverage and the estimated premium are outlined below:</p>
     </div>
 
-    <div class="form-group">
-      <label for="rateWith">Rate per mille with Terrorism</label>
-      <input type="number" step="0.001" id="rateWith" onchange="validateMinRates()" oninput="calculate()" placeholder="e.g. 0.11" />
+    <div class="quote-table-title">Property and Sum Insured Break-up</div>
+    <div id="printTableContainer"></div>
+
+    <div class="quote-summary-box">
+      <div class="quote-summary-row">
+        <span>Policy Period :</span>
+        <span id="printPolicyPeriod">1 Year</span>
+      </div>
+      <div class="quote-summary-row">
+        <span>1) Premium :</span>
+        <span id="printBasePremium">₹ 0</span>
+      </div>
+      <div class="quote-summary-row">
+        <span>2) GST 18% :</span>
+        <span id="printGstAmount">₹ 0</span>
+      </div>
+      <div class="quote-summary-row total">
+        <span>TOTAL ESTIMATED PREMIUM :</span>
+        <span id="printTotalPremium">₹ 0</span>
+      </div>
     </div>
 
-    <div class="form-group full-width">
-      <label for="coverType">Apply Rate Type</label>
-      <select id="coverType" onchange="calculate()">
-        <option value="without">Without Terrorism Rate</option>
-        <option value="with">With Terrorism Rate</option>
-      </select>
+    <div class="quote-closing">
+      <p>Should you require any modifications to this quote or have further queries, please feel free to reach out to us. We look forward to hearing from you.</p>
+      <p>Thanking you.</p>
+    </div>
+
+    <div class="quote-signature">
+      <p>Sincerely,</p>
+      <p><strong>Authorized Signatory</strong><br>The New India Assurance Co. Ltd.</p>
     </div>
   </div>
-
-  <div class="premium-box">
-    <h3>Premium Working</h3>
-    <div class="premium-row">
-      <span>1) Premium :</span>
-      <span id="basePremium">₹ 0</span>
-    </div>
-    <div class="premium-row">
-      <span>2) GST 18% :</span>
-      <span id="gstAmount">₹ 0</span>
-    </div>
-    <div class="premium-row total">
-      <span>TOTAL :</span>
-      <span id="totalPremium">₹ 0</span>
-    </div>
-  </div>
-  <!-- Printable Area Ends Here -->
 
   <div class="actions">
-    <button class="btn" onclick="window.print()">Download as PDF / Print</button>
+    <button class="btn" onclick="generatePdfPrint()">Download as PDF / Print</button>
   </div>
 </div>
 
@@ -698,6 +812,85 @@
     document.getElementById('basePremium').innerText = '₹ ' + premium.toLocaleString('en-IN');
     document.getElementById('gstAmount').innerText = '₹ ' + gst.toLocaleString('en-IN');
     document.getElementById('totalPremium').innerText = '₹ ' + total.toLocaleString('en-IN');
+  }
+
+  // Generate Quotation Printable View
+  function generatePdfPrint() {
+    // Auto-generate Date (dd/mm/yyyy)
+    const today = new Date();
+    const formattedDate = String(today.getDate()).padStart(2, '0') + '/' + 
+                          String(today.getMonth() + 1).padStart(2, '0') + '/' + 
+                          today.getFullYear();
+    document.getElementById('printDate').innerText = formattedDate;
+
+    // Transfer Business/Customer Details
+    document.getElementById('printBusOffice').innerText = document.getElementById('businessOffice').value || '--------------------';
+    document.getElementById('printBusContact').innerText = document.getElementById('businessOfficeContact').value || '--------------------';
+    document.getElementById('printCustName').innerText = document.getElementById('customerName').value || '--------------------';
+
+    // Transfer Premium Summary
+    const period = document.getElementById('policyPeriod').value || 1;
+    document.getElementById('printPolicyPeriod').innerText = period + (period > 1 ? ' Years' : ' Year');
+    document.getElementById('printBasePremium').innerText = document.getElementById('basePremium').innerText;
+    document.getElementById('printGstAmount').innerText = document.getElementById('gstAmount').innerText;
+    document.getElementById('printTotalPremium').innerText = document.getElementById('totalPremium').innerText;
+
+    // Replicate Estimator Table cleanly into Print Container
+    const props = ["Building", "Building", "Contents", "Contents", "Addl Structures", "Addl Structures"];
+    let tableHtml = `
+      <table class="estimator-table">
+        <thead>
+          <tr>
+            <th style="width:25px;"></th>
+            <th style="width:110px;">Property</th>
+            <th>Description</th>
+            <th style="width:110px; text-align:center;">Rate of Construction</th>
+            <th style="width:90px; text-align:center;">Square Metre</th>
+            <th style="width:125px; text-align:right;">Sum Insured</th>
+          </tr>
+        </thead>
+        <tbody>`;
+
+    for (let i = 1; i <= 6; i++) {
+      let desc = document.getElementById(`desc${i}`).value || '-';
+      let rate = i <= 2 ? (document.getElementById(`estRate${i}`).value || '-') : 'NA';
+      let sqm = i <= 2 ? (document.getElementById(`estSqm${i}`).value || '-') : 'NA';
+      
+      let si = '';
+      if (i <= 2) {
+        si = document.getElementById(`estSi${i}`).value || '₹ 0';
+      } else {
+        let rawVal = document.getElementById(`estDirectSi${i}`).value;
+        let parsedVal = parseFloat(rawVal.replace(/[^\d.-]/g, '')) || 0;
+        si = parsedVal > 0 ? '₹ ' + parsedVal.toLocaleString('en-IN') : '₹ 0';
+      }
+
+      tableHtml += `
+        <tr>
+          <td style="text-align:center; font-weight:bold;">${i}</td>
+          <td style="font-weight:bold;">${props[i-1]}</td>
+          <td>${desc}</td>
+          <td style="text-align:center;">${rate}</td>
+          <td style="text-align:center;">${sqm}</td>
+          <td style="text-align:right; font-weight:bold;">${si}</td>
+        </tr>`;
+    }
+
+    const totalSi = document.getElementById('estTotalSi').value || '₹ 0';
+    tableHtml += `
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="5" style="text-align:center; font-weight:bold;">TOTAL SUM INSURED</td>
+            <td style="text-align:right; font-weight:bold;">${totalSi}</td>
+          </tr>
+        </tfoot>
+      </table>`;
+
+    document.getElementById('printTableContainer').innerHTML = tableHtml;
+
+    // Trigger Print Window
+    window.print();
   }
 
   calculate();
