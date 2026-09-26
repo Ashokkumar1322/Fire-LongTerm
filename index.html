@@ -192,6 +192,12 @@
       border: 1px solid var(--accent);
     }
 
+    /* Center align inputs in Rate of Construction and Square Metre columns */
+    .estimator-table .col-rate input,
+    .estimator-table .col-sqm input {
+      text-align: center;
+    }
+
     /* Right-aligned and dark text specifically for the Sum Insured column */
     .estimator-table .col-si input {
       text-align: right;
@@ -336,7 +342,11 @@
         font-size: 9pt;
       }
       
-      /* Maintain right alignment on print */
+      .estimator-table .col-rate input,
+      .estimator-table .col-sqm input {
+        text-align: center;
+      }
+
       .estimator-table .col-si input {
         text-align: right;
       }
@@ -549,7 +559,6 @@
 <script>
   // --- Formatting Functions ---
   function formatCurrency(el) {
-    // Strip everything except numbers and decimals
     let val = parseFloat(el.value.replace(/[^\d.-]/g, ''));
     if (!isNaN(val) && val > 0) {
       el.value = '₹ ' + val.toLocaleString('en-IN');
@@ -559,7 +568,6 @@
   }
 
   function unformatCurrency(el) {
-    // Reveal raw number for editing
     let val = parseFloat(el.value.replace(/[^\d.-]/g, ''));
     if (!isNaN(val) && val > 0) {
       el.value = val;
@@ -686,7 +694,6 @@
     document.getElementById('totalPremium').innerText = '₹ ' + total.toLocaleString('en-IN');
   }
 
-  // Initial call to ensure table aligns properly
   calculate();
 </script>
 
