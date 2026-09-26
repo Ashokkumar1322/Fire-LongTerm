@@ -626,14 +626,10 @@
         <td><strong>Business Office Contact :</strong> <span id="printBusContact"></span></td>
         <td></td>
       </tr>
-      <tr>
-        <td><strong>Customer’s Name :</strong> <span id="printCustName"></span></td>
-        <td></td>
-      </tr>
     </table>
 
     <div class="quote-letter-body">
-      <p>Sir/Madam,</p>
+      <p>Mr / Ms / M/s <span id="printSalutationCustName" style="font-weight: bold;"></span>,</p>
       <p>Greetings from The New India Assurance Co. Ltd., India's Premier Multinational General Insurance Company!</p>
       <p>We sincerely thank you for choosing us for your insurance needs. Based on the requirements you shared, we are pleased to present our customized quotation for your perusal. The details of your proposed coverage and the estimated premium are outlined below:</p>
     </div>
@@ -823,10 +819,10 @@
                           today.getFullYear();
     document.getElementById('printDate').innerText = formattedDate;
 
-    // Transfer Business/Customer Details
+    // Transfer Business Details & Customer Salutation
     document.getElementById('printBusOffice').innerText = document.getElementById('businessOffice').value || '--------------------';
     document.getElementById('printBusContact').innerText = document.getElementById('businessOfficeContact').value || '--------------------';
-    document.getElementById('printCustName').innerText = document.getElementById('customerName').value || '--------------------';
+    document.getElementById('printSalutationCustName').innerText = document.getElementById('customerName').value || '--------------------';
 
     // Transfer Premium Summary
     const period = document.getElementById('policyPeriod').value || 1;
